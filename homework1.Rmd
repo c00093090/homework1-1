@@ -168,10 +168,11 @@ library(stringr)
 ```{r ans34}
 ChosenGrade <- c(studentID == "046S6f645"
     &schoolYear == 100
-    &earnedcredit>=0)
+    &earnedcredit>=0
+    )
 class(ChosenGrade)
-sum(ChosenGrade*credit)
-gpa100ChosenStudent <- sum(ChosenGrade*credit)/credit100ChosenStudent
+sum(ChosenGrade*earnedcredit)
+gpa100ChosenStudent <- sum(ChosenGrade*earnedcredit)/credit100ChosenStudent
 gpa100ChosenStudent
 ```
 
