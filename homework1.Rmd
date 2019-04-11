@@ -49,16 +49,23 @@ grade <- c(50,60,92,88)
 ### 1.1
 創造一個名為fromEcon的logical class物件，每個元素對應major物件中相同位置元素其值是否為"經濟系"的邏輯判斷——TRUE表示來自經濟系。（答案物件fromEcon）
 ```{r ans11}
+fromEcon <- major =="經濟系"
+fromEcon
 ```
 
 ### 1.2
 請由fromEcon計算出來自經濟學系的觀測值個數，存成答案物件sumEcon。
 ```{r ans12}
+sumEcon <- sum(fromEcon)
+sumEcon
 ```
 
 ### 1.3
 善用logical class遇到數學計算會形成1與0的數值之特質，計算經濟系學生在該科的平均成績（即經濟系學生在該科成績加總除以經濟系學生數），存成答案物件meanEcon。
 ```{r ans13}
+sumgradeEcon <- sum(grade*fromEcon)
+meanEcon <- sumgradeEcon/sumEcon
+meanEcon
 ```
  
 ## 2
@@ -74,22 +81,37 @@ head(submitTime)
 ### 2.1
 請將submitTime轉成電腦看得懂的date time並存回相同答案物件submitTime。(原資料來自Google表單，所以是內定的UTC時區)
 ```{r ans21}
+submitTime <- mdy_hms(podcastcompetition3$Timestamp)
+class(submitTime)
+submitTime <- as.double(submitTime)
+submitTime
 ```
 
 ### 2.2
 請將submitTime轉成台灣時區，並存在答案物件twTime。
 ```{r ans22}
+submitTime <- mdy_hms(podcastcompetition3$Timestamp)
+twTime <- ymd_hms(submitTime)
+twTime <- with_tz(submitTime , tzone ="Asia/Taipei")
+twTime
 ```
 
 ### 2.3
 使用`hour(twTime)`取出twTime的小時值。創造出一個logical class答案物件nightOwl，為TRUE若twTime中的投票時間在半夜1點到早上6點間（包含1與6。
 
 ```{r ans23}
+HTWtime <- hour(twTime)
+nightOwl <- HTWtime>=1 & HTWtime <= 6
+nightOwl
 ```
 
 ### 2.4
 承上題，在上題半夜間投票的學生佔總投票人數的比何為多少？（存在答案物件nightOwlVoteShare）（hint: `length()`可以計算向量的元素個數）
 ```{r ans24}
+length(nightOwl)
+sum(nightOwl)
+nightOwlVoteShare <- sum(nightOwl)/length(nightOwl)
+nightOwlVoteShare
 ```
 
 ## 3
@@ -109,21 +131,39 @@ studentID, schoolYear, grade, credit的每一個元素位置其值分別代表�
 對每一科，只有及格才表示有拿到學分，請創造一個integer class物件名為earnedCredit, 其值為0若沒拿到該科學分，其值為對應credit位置的學分數若有拿到該科學分。
 （舉例： 若credit為c(2,3,2), 而對應grade為c(55,70,88), 則earnedCredit為c(0,3,2)）此題答案物件為earnedCredit （注意class也要對）
 ```{r ans31}
+earnedgrade <- c(grade >=60)
+ECcredit <- earnedgrade*credit
+earnedcredit <- as.integer(ECcredit)
+class(earnedcredit)
+earnedcredit
 ```
 
 ### 3.2
 請問學號為046S6f645的學生在100學年修習了多少學分? 答案請存在答案物件credit100ChosenStudent。
 ```{r ans32}
+credit100ChosenStudent <-sum(studentID == "046S6f645"
+    &schoolYear == 100
+    &credit)
+
+credit100ChosenStudent
 ```
 
 ### 3.3
 請問學號為046S6f645的學生在100學年實得了多少學分？答案請存在物件earnedCredit100ChosenStudent。
 ```{r ans33}
+earnedCredit100ChosenStudent <-sum(studentID == "046S6f645"
+    &schoolYear == 100
+    &earnedcredit)
+earnedCredit100ChosenStudent
 ```
 
 ### 3.4
 請問學號為046S6f645的學生在100學年的學年平均成績為多少？（存在答案物件gpa100ChosenStudent）(即為該生該學年所有**學分數大於0**的各科學期成績**分別乘上各科學分數**加總後，除以其該學年總學分數) (hint: 建議先創一個可以代表元素是否來自**該學號**，且**100學年**，且**學分數>0**的logical class物件，用它來選出所要的成績或學分進行必要相乘或加總)
 ```{r ans34}
+sumChosenGrade <- c(sum(studentID == "046S6f645"
+    &schoolYear == 100
+    &earnedcredit>=0))
+sumChosenGrade
 ```
 
 > 答案後，請確認每個code chunk的最後一行皆為該題的答案物件。
