@@ -87,6 +87,12 @@ submitTime <- as.double(submitTime)
 submitTime
 ```
 
+```{r rightans21}
+submitTime <- mdy_hms(submitTime)
+submitTime
+```
+
+
 ### 2.2
 請將submitTime轉成台灣時區，並存在答案物件twTime。
 ```{r ans22}
@@ -95,6 +101,12 @@ twTime <- ymd_hms(submitTime)
 twTime <- with_tz(submitTime , tzone ="Asia/Taipei")
 twTime
 ```
+
+```{r}
+twTime<-with_tz(submitTime, tzone = "Asia/Taipei")
+twTime
+```
+
 
 ### 2.3
 使用`hour(twTime)`取出twTime的小時值。創造出一個logical class答案物件nightOwl，為TRUE若twTime中的投票時間在半夜1點到早上6點間（包含1與6。
@@ -138,6 +150,13 @@ class(earnedcredit)
 earnedcredit
 ```
 
+```{r}
+earnedCredit <- (grade >= 60)*credit
+earnedCredit <- as.integer(earnedCredit)
+earnedCredit
+```
+
+
 ### 3.2
 請問學號為046S6f645的學生在100學年修習了多少學分? 答案請存在答案物件credit100ChosenStudent。
 ```{r ans32}
@@ -148,6 +167,14 @@ credit100ChosenStudent <-sum(studentID == "046S6f645"
 credit100ChosenStudent
 ```
 
+```{r rightans32}
+isChosenStudent <- studentID=="046S6f645"
+
+credit100ChosenStudent <- sum((isChosenStudent & schoolYear==100)*credit)
+credit100ChosenStudent
+```
+
+
 ### 3.3
 請問學號為046S6f645的學生在100學年實得了多少學分？答案請存在物件earnedCredit100ChosenStudent。
 ```{r ans33}
@@ -156,6 +183,12 @@ earnedCredit100ChosenStudent <-sum(studentID == "046S6f645"
     &earnedcredit)
 earnedCredit100ChosenStudent
 ```
+
+```{r rightans33}
+earnedCredit100ChosenStudent <- sum((isChosenStudent & schoolYear==100)*earnedCredit)
+earnedCredit100ChosenStudent
+```
+
 
 ### 3.4
 請問學號為046S6f645的學生在100學年的學年平均成績為多少？（存在答案物件gpa100ChosenStudent）(即為該生該學年所有**學分數大於0**的各科學期成績**分別乘上各科學分數**加總後，除以其該學年總學分數) (hint: 建議先創一個可以代表元素是否來自**該學號**，且**100學年**，且**學分數>0**的logical class物件，用它來選出所要的成績或學分進行必要相乘或加總)
@@ -175,5 +208,13 @@ sum(ChosenGrade*earnedcredit)
 gpa100ChosenStudent <- sum(ChosenGrade*earnedcredit)/credit100ChosenStudent
 gpa100ChosenStudent
 ```
+
+```{r rightans34}
+subjectFitsCriteria <- (isChosenStudent & schoolYear==100 & credit >0 ) 
+
+gpa100ChosenStudent <- sum(subjectFitsCriteria*grade*credit)/sum(subjectFitsCriteria*credit)
+gpa100ChosenStudent
+```
+
 
 > 答案後，請確認每個code chunk的最後一行皆為該題的答案物件。
